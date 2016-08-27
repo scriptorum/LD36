@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Tile : MonoBehaviour
 {
-	public Board board;
+	public static TileEvent onMouseOver = new TileEvent();
+
 	public int x;
 	public int y;
-	public int level = 0;
+	public bool glow = true;
+	public int terrainType;
 
 	void Awake()
 	{
-		board = GameObject.Find("Board").GetComponent<Board>();
 	}
 
 	void Start()
@@ -24,23 +26,11 @@ public class Tile : MonoBehaviour
 
 	void OnMouseOver()
 	{
-		if(!board.editMode) return;
-
-		for(int i = 0; i < board.terrainTypes.Length; i++)
-		{
-			if(Input.GetKey(KeyCode.Alpha0 + i))
-			{
-				if(i != board.getTile(x,y))
-					board.setTile(x, y, i);
-				break;
-			}
-		}
-
-		if(Input.GetKey(KeyCode.L))
-		{
-			level = (++level % 2);
-			board.updateTile(x,y);
-		}
+		Tile.onMouseOver.Invoke(this);
 	}
+}
+
+public class TileEvent : UnityEvent<Tile>
+{
 }
 

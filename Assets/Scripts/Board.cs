@@ -31,7 +31,7 @@ public class Board : MonoBehaviour
 	void Update()
 	{
 	}
-		
+
 	public void serializeContents()
 	{
 		contents = "";
@@ -42,7 +42,50 @@ public class Board : MonoBehaviour
 	{
 		Debug.Assert(contents.Length == terrain.width * terrain.height, 
 			"Expected contents length of " + (terrain.width * terrain.height) + " but found " + contents.Length);
-		terrain.EachPosition((x, y) => terrain[x, y] = int.Parse(contents[getContentsPosition(x,y)].ToString()));
+		terrain.EachPosition((x, y) => terrain[x, y] = int.Parse(contents[getContentsPosition(x, y)].ToString()));
+	}
+
+	public List<Tile> getNeighbors(int x, int y)
+	{
+		List<Tile> neighbors = new List<Tile>();
+
+		int[] centerOffsets = new int[] { -1, 1 };
+		int[] oddOffsets = new int[] { -1, 0 };
+		int[] evenOffsets = new int[] { 0, 1 };
+
+		int ox = 0;
+		for(int oy = -1; oy <= 1; oy++) for(int el = 0; el <= 1; el++)
+			{
+				if(oy == 0) ox = centerOffsets[el];
+				else if(y % 2 == 0) ox = evenOffsets[el];
+				else ox = oddOffsets[el];
+				
+			Tile tile = getTileAt(x + ox, y + oy);
+				if(tile != null) neighbors.Add(tile);
+			}
+
+		return neighbors;
+	}
+
+	public Tile getTileAt(int x, int y)
+	{
+		GameObject tileGO = GameObject.Find(getNameFor(x, y));
+		if(tileGO == null) return null;
+		return tileGO.GetComponent<Tile>();
+	}
+
+	public void setGlow(int x, int y, bool active)
+	{
+		GameObject tileGO = GameObject.Find(getNameFor(x, y));
+		Tile tile = tileGO.GetComponent<Tile>();
+		tile.glow = active;
+		GameObject glowGO = tileGO.GetChild("Glow");
+		glowGO.SetActive(tile.glow);
+	}
+
+	public void clearGlow()
+	{
+		terrain.EachPosition((x, y) => setGlow(x, y, false));
 	}
 
 	public int getContentsPosition(int x, int y)
@@ -52,8 +95,7 @@ public class Board : MonoBehaviour
 
 	public void updateTiles()
 	{
-		if(terrain == null)
-			return;
+		if(terrain == null) return;
 		
 		foreach(GameObject go in GameObject.FindGameObjectsWithTag("Tile")) GameObject.Destroy(go);
 		terrain.EachPosition((x, y) => spawnTerrain(x, y));
@@ -63,25 +105,25 @@ public class Board : MonoBehaviour
 	{
 		Debug.Assert(terrainId >= 0, "Expected terrainId >= 0 but found " + terrainId);
 		Debug.Assert(terrainId < terrainTypes.Length, "Expected terrainId < " + terrainTypes.Length + " but found " + terrainId);
-		terrain[x,y] = terrainId;
+		terrain[x, y] = terrainId;
 		serializeContents();
-		updateTile(x,y);
+		updateTile(x, y);
 	}
 
 	public void updateTile(int x, int y)
 	{
-		Sprite spr = terrainTypes[terrain[x,y]].sprite;
-		GameObject go = GameObject.Find(getNameFor(x,y));
+		Sprite spr = terrainTypes[terrain[x, y]].sprite;
+		GameObject go = GameObject.Find(getNameFor(x, y));
 		SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
 		sr.sprite = spr;
 		Tile tile = go.GetComponent<Tile>();
 		GameObject glowGO = go.GetChild("Glow");
-		glowGO.SetActive(tile.level > 0);
+		glowGO.SetActive(tile.glow);
 	}
 
-	public int getTile(int x, int y)
+	public int getTerrainId(int x, int y)
 	{
-		return terrain[x,y];
+		return terrain[x, y];
 	}
 
 	void OnValidate()
@@ -109,6 +151,12 @@ public class Board : MonoBehaviour
 		Tile tile = tileGO.GetComponent<Tile>();
 		tile.x = x;
 		tile.y = y;
+		tile.terrainType = terrainId;
+	}
+
+	public string getNameForTerrainId(int terrainId)
+	{
+		return terrainTypes[terrainId].name;
 	}
 
 	private string getNameFor(int x, int y)
