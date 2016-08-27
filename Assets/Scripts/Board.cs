@@ -17,7 +17,7 @@ public class Board : MonoBehaviour
 	{
 		terrain = new Map<int>(cols, rows, 0);
 		terrain.EachPosition((x, y) =>
-			terrain[x, y] = Random.Range(0, 4));
+			terrain[x, y] = Random.Range(0, 6));
 
 		terrain.EachPosition((x, y) => spawnTerrain(x, y, terrain[x, y]));		
 	}

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c62d2b07b813e4d7ebde38900f8bbfd9
-timeCreated: 1472290132
+timeCreated: 1472295216
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,12 @@ TextureImporter:
     21300002: plains
     21300004: forest
     21300006: river3
+    21300008: terrain_0
+    21300010: terrain_1
+    21300012: terrain_2
+    21300014: terrain_3
+    21300016: terrain_4
+    21300018: terrain_5
   serializedVersion: 3
   mipmaps:
     mipMapMode: 0
@@ -56,7 +62,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mountain
+      name: terrain_0
       rect:
         serializedVersion: 2
         x: 0
@@ -64,12 +70,12 @@ TextureImporter:
         width: 50
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: plains
+      name: terrain_1
       rect:
         serializedVersion: 2
         x: 50
@@ -77,12 +83,12 @@ TextureImporter:
         width: 50
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: forest
+      name: terrain_2
       rect:
         serializedVersion: 2
         x: 100
@@ -90,12 +96,12 @@ TextureImporter:
         width: 50
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: river3
+      name: terrain_3
       rect:
         serializedVersion: 2
         x: 150
@@ -103,7 +109,33 @@ TextureImporter:
         width: 50
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: terrain_4
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: terrain_5
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 0
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
