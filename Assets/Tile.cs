@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour
 	public Board board;
 	public int x;
 	public int y;
+	public int level = 0;
 
 	void Awake()
 	{
@@ -33,6 +34,12 @@ public class Tile : MonoBehaviour
 					board.setTile(x, y, i);
 				break;
 			}
+		}
+
+		if(Input.GetKey(KeyCode.L))
+		{
+			level = (++level % 2);
+			board.updateTile(x,y);
 		}
 	}
 }

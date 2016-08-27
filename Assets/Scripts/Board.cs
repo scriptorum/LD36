@@ -65,11 +65,18 @@ public class Board : MonoBehaviour
 		Debug.Assert(terrainId < terrainTypes.Length, "Expected terrainId < " + terrainTypes.Length + " but found " + terrainId);
 		terrain[x,y] = terrainId;
 		serializeContents();
+		updateTile(x,y);
+	}
 
-		Sprite spr = terrainTypes[terrainId].sprite;
+	public void updateTile(int x, int y)
+	{
+		Sprite spr = terrainTypes[terrain[x,y]].sprite;
 		GameObject go = GameObject.Find(getNameFor(x,y));
 		SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
 		sr.sprite = spr;
+		Tile tile = go.GetComponent<Tile>();
+		GameObject glowGO = go.GetChild("Glow");
+		glowGO.SetActive(tile.level > 0);
 	}
 
 	public int getTile(int x, int y)
