@@ -287,8 +287,11 @@ MonoBehaviour:
   y: 0
   glow: 0
   hasRoad: 0
-  isVillage: 0
-  terrainType: 0
+  terrainType:
+    name: 
+    sprite: {fileID: 0}
+    isVillage: 0
+    cost: 0
 --- !u!212 &212000010153114732
 SpriteRenderer:
   m_ObjectHideFlags: 1

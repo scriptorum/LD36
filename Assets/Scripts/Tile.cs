@@ -11,8 +11,7 @@ public class Tile : MonoBehaviour
 	public int y;
 	public bool glow = true;
 	public bool hasRoad = false;
-	public bool isVillage = false;
-	public int terrainType;
+	public TerrainType terrainType;
 
 	void Awake()
 	{

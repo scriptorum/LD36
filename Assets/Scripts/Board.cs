@@ -116,7 +116,7 @@ public class Board : MonoBehaviour
 		{
 			GameObject roadGO = tileGO.GetChild("Road" + index++);
 			bool showRoad = tile.hasRoad;
-			if(tile.isVillage) showRoad = false;
+			if(tile.terrainType.isVillage) showRoad = false;
 			if(n == null || !n.hasRoad) showRoad = false;				
 			roadGO.SetActive(showRoad);
 
@@ -162,8 +162,8 @@ public class Board : MonoBehaviour
 		Tile tile = tileGO.GetComponent<Tile>();
 		tile.x = x;
 		tile.y = y;
-		tile.terrainType = terrainId;
-		tile.hasRoad = tile.isVillage = terrainTypes[terrainId].isVillage;
+		tile.terrainType = terrainTypes[terrainId];
+		tile.hasRoad = tile.terrainType.isVillage;
 		updateTile(x, y);
 	}
 
@@ -212,6 +212,7 @@ public class TerrainType
 	public string name;
 	public Sprite sprite;
 	public bool isVillage;
+	public int cost;
 }
 
 	
