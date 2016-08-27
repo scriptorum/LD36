@@ -271,22 +271,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e10ed0bda7049e6a7782f233504a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 12
-  cols: 17
   tilePrefab: {fileID: 1000013431177578, guid: 5c2e75ea5c4b24152b2958820b0fc783, type: 2}
   terrainTypes:
   - name: plains
-    sprite: {fileID: 21300010, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    sprite: {fileID: 21300002, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
   - name: forest
-    sprite: {fileID: 21300010, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    sprite: {fileID: 21300004, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
   - name: mountain
-    sprite: {fileID: 21300008, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    sprite: {fileID: 21300000, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
   - name: village
     sprite: {fileID: 21300016, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
   - name: water
     sprite: {fileID: 21300018, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+  rows: 12
+  cols: 17
   tileWidth: 1.1111112
   tileHeight: 0.96
+  contents: 000002200000000100004000003022000100302220002200300000022000020300000000130000000044040001111111004400400111131110440004003111000004400040000002220403000440003002200000024400000000000022044400000000000222
+  editMode: 0
 --- !u!4 &1393869580
 Transform:
   m_ObjectHideFlags: 0

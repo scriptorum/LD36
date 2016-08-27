@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010597069552}
   - 212: {fileID: 212000011326500578}
+  - 114: {fileID: 114000012792089978}
+  - 60: {fileID: 60000012088323038}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Tile
@@ -40,6 +42,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &60000012088323038
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013431177578}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: -0.006460339, y: 0.65930235}
+      - {x: -0.53772616, y: 0.32700273}
+      - {x: -0.53772616, y: -0.31821716}
+      - {x: -0.00051671267, y: -0.64444447}
+      - {x: 0.54664093, y: -0.29870817}
+      - {x: 0.55258393, y: 0.32545248}
+--- !u!114 &114000012792089978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013431177578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a187bee8475bb4f51aa9567572068be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 0}
+  x: 0
+  y: 0
 --- !u!212 &212000011326500578
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -68,12 +104,12 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+  m_Sprite: {fileID: 21300008, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5, y: 0.58}
+  m_Size: {x: 1.1111112, y: 1.2888889}
   m_SliceFullTilingThreshold: 0.5
   m_SliceFullTiling: 1
   m_MaskingSetup: 0
