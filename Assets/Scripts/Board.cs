@@ -18,13 +18,12 @@ public class Board : MonoBehaviour
 	void Awake()
 	{
 		terrain = new Map<int>(cols, rows, 0);
-
-		if(contents == "") serializeContents();
-		else deserializeContents();
 	}
 
 	void Start()
 	{
+		if(contents == "") serializeContents();
+		else deserializeContents();
 		updateTiles();
 	}
 
@@ -45,7 +44,9 @@ public class Board : MonoBehaviour
 		terrain.EachPosition((x, y) => terrain[x, y] = int.Parse(contents[getContentsPosition(x, y)].ToString()));
 	}
 
-	public List<Tile> getNeighbors(int x, int y)
+	// If sorted, six results are returned, which may include nulls
+	// Otherwise there may be fewer than six if at map edges
+	public List<Tile> getNeighbors(int x, int y, bool isSorted = false)
 	{
 		List<Tile> neighbors = new List<Tile>();
 
@@ -60,11 +61,20 @@ public class Board : MonoBehaviour
 				else if(y % 2 == 0) ox = evenOffsets[el];
 				else ox = oddOffsets[el];
 				
-			Tile tile = getTileAt(x + ox, y + oy);
-				if(tile != null) neighbors.Add(tile);
+				Tile tile = getTileAt(x + ox, y + oy);
+				if(tile != null || isSorted) neighbors.Add(tile);
 			}
 
-		return neighbors;
+		if(!isSorted) return neighbors;
+
+		List<Tile> sorted = new List<Tile>();
+		sorted.Add(neighbors[5]);
+		sorted.Add(neighbors[3]);
+		sorted.Add(neighbors[1]);
+		sorted.Add(neighbors[0]);
+		sorted.Add(neighbors[2]);
+		sorted.Add(neighbors[4]);
+		return sorted;		
 	}
 
 	public Tile getTileAt(int x, int y)
@@ -86,6 +96,33 @@ public class Board : MonoBehaviour
 	public void clearGlow()
 	{
 		terrain.EachPosition((x, y) => setGlow(x, y, false));
+	}
+
+	public void setRoad(int x, int y, bool hasRoad)
+	{
+		GameObject tileGO = GameObject.Find(getNameFor(x, y));
+		Tile tile = tileGO.GetComponent<Tile>();
+		tile.hasRoad = hasRoad;
+		updateRoad(x, y);
+	}
+
+	public void updateRoad(int x, int y, bool updateNeighbors = true)
+	{
+		GameObject tileGO = GameObject.Find(getNameFor(x, y));
+		Tile tile = tileGO.GetComponent<Tile>();
+		List<Tile> neighbors = getNeighbors(x, y, true);
+		int index = 1;
+		foreach(Tile n in neighbors)
+		{
+			GameObject roadGO = tileGO.GetChild("Road" + index++);
+			bool showRoad = tile.hasRoad;
+			if(tile.isVillage) showRoad = false;
+			if(n == null || !n.hasRoad) showRoad = false;				
+			roadGO.SetActive(showRoad);
+
+			if(showRoad && updateNeighbors)
+				updateRoad(n.x, n.y, false);
+		}
 	}
 
 	public int getContentsPosition(int x, int y)
@@ -110,15 +147,38 @@ public class Board : MonoBehaviour
 		updateTile(x, y);
 	}
 
+	// Creates a new tile
+	private void spawnTerrain(int x, int y)
+	{
+		int terrainId = terrain[x, y];
+		Debug.Assert(terrainId >= 0, "Expected terrainId >= 0 but found " + terrainId);
+		Debug.Assert(terrainId < terrainTypes.Length, "Expected terrainId < " + terrainTypes.Length + " but found " + terrainId);
+		GameObject tileGO = Instantiate(tilePrefab);
+		tileGO.transform.parent = transform;
+		float gox = tileWidth * (x + (y % 2 == 1 ? 0 : 0.5f));
+		float goy = tileHeight * y;
+		tileGO.transform.localPosition = new Vector2(gox, goy);
+		tileGO.name = getNameFor(x, y);
+		Tile tile = tileGO.GetComponent<Tile>();
+		tile.x = x;
+		tile.y = y;
+		tile.terrainType = terrainId;
+		tile.hasRoad = tile.isVillage = terrainTypes[terrainId].isVillage;
+		updateTile(x, y);
+	}
+
+	// Sets the tile's sprite, glow, and roads
 	public void updateTile(int x, int y)
 	{
-		Sprite spr = terrainTypes[terrain[x, y]].sprite;
+		int terrainId = terrain[x, y];
+		Sprite spr = terrainTypes[terrainId].sprite;
 		GameObject go = GameObject.Find(getNameFor(x, y));
 		SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
 		sr.sprite = spr;
 		Tile tile = go.GetComponent<Tile>();
 		GameObject glowGO = go.GetChild("Glow");
 		glowGO.SetActive(tile.glow);
+		updateRoad(x, y);
 	}
 
 	public int getTerrainId(int x, int y)
@@ -134,30 +194,10 @@ public class Board : MonoBehaviour
 		updateTiles();
 	}
 
-	private void spawnTerrain(int x, int y)
-	{
-		int terrainId = terrain[x, y];
-		Debug.Assert(terrainId >= 0, "Expected terrainId >= 0 but found " + terrainId);
-		Debug.Assert(terrainId < terrainTypes.Length, "Expected terrainId < " + terrainTypes.Length + " but found " + terrainId);
-		Sprite spr = terrainTypes[terrainId].sprite;
-		GameObject tileGO = Instantiate(tilePrefab);
-		tileGO.transform.parent = transform;
-		SpriteRenderer sr = tileGO.GetComponent<SpriteRenderer>();
-		sr.sprite = spr;
-		float gox = tileWidth * (x + (y % 2 == 1 ? 0 : 0.5f));
-		float goy = tileHeight * y;
-		tileGO.transform.localPosition = new Vector2(gox, goy);
-		tileGO.name = getNameFor(x, y);
-		Tile tile = tileGO.GetComponent<Tile>();
-		tile.x = x;
-		tile.y = y;
-		tile.terrainType = terrainId;
-	}
-
-	public string getNameForTerrainId(int terrainId)
-	{
-		return terrainTypes[terrainId].name;
-	}
+	//	public string getNameForTerrainId(int terrainId)
+	//	{
+	//		return terrainTypes[terrainId].name;
+	//	}
 
 	private string getNameFor(int x, int y)
 	{
@@ -171,6 +211,7 @@ public class TerrainType
 {
 	public string name;
 	public Sprite sprite;
+	public bool isVillage;
 }
 
 	

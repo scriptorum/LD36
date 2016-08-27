@@ -23,19 +23,19 @@ public class Gameplay : MonoBehaviour
 
 	public void mouseOver(Tile tile)
 	{
-//		// VERIFY NEIGHBORS TEST
-//		if(Input.GetMouseButtonDown(0))
-//		{
-//			// Reset glow on all tiles
-//			board.clearGlow();
-//
-//			// Get all tile neighbors
-//			List<Tile> neighbors = board.getNeighbors(tile.x, tile.y);
-//
-//			// Set glow on these tiles
-//			foreach(Tile n in neighbors)
-//				board.setGlow(n.x, n.y, true);
-//		}
+		// VERIFY NEIGHBORS TEST
+		if(Input.GetMouseButtonDown(1))
+		{
+			// Reset glow on all tiles
+			board.clearGlow();
+
+			// Get all tile neighbors
+			List<Tile> neighbors = board.getNeighbors(tile.x, tile.y);
+
+			// Set glow on these tiles
+			foreach(Tile n in neighbors)
+				board.setGlow(n.x, n.y, true);
+		}
 
 		// While drawing road
 		if(drawingRoad)
@@ -58,16 +58,17 @@ public class Gameplay : MonoBehaviour
 		// Start drawing road
 		else if(Input.GetMouseButtonDown(0))
 		{
-			// Verify road can start here
-			if(board.getNameForTerrainId(tile.terrainType) != "village")
+			// Road cannot start on village, villages are assumed to have roads
+			if(tile.isVillage)
 			{
 				// TODO This is not a village, but does it have a road?
 				return;
 			}
 				
-			drawingRoad = true;
+//			drawingRoad = true;
 
 			// TODO Place first road and start it
+			board.setRoad(tile.x, tile.y, true);
 		}
 
 	}
