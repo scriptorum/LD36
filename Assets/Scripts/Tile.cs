@@ -14,10 +14,12 @@ public class Tile : MonoBehaviour
 	public bool hasRoad = false;
 	public TerrainType type;
 	private ParticleSystem dustFX;
+	private ParticleSystem kachingFX;
 
 	void Awake()
 	{
 		dustFX = gameObject.GetChild("Dust").GetComponent<ParticleSystem>();
+		kachingFX = gameObject.GetChild("Kaching").GetComponent<ParticleSystem>();
 	}
 
 	void Start()
@@ -36,6 +38,11 @@ public class Tile : MonoBehaviour
 	public void showDust()
 	{
 		dustFX.Play();
+	}
+
+	public void showKaching()
+	{
+		kachingFX.Play();
 	}
 }
 

@@ -21,7 +21,6 @@ Build a trade network connecting all the villages.
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
 
-- [ ] FX: Village connected
 - [ ] SFX: build road
 - [ ] SFX: can't build road
 - [ ] SFX: gain village (x3)
@@ -46,5 +45,6 @@ It's loosely ordered by priority.
 - [ ] Better road art
 - [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
 - [X] FX: Dust when building road
+- [X] FX: Village connected
 
 

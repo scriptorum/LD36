@@ -128,6 +128,7 @@ public class Gameplay : MonoBehaviour
 						trans.source = TransactionSource.Custom;
 						trans.custom = t.gameObject.transform;
 						income += t.type.income;
+						t.showKaching();
 						board.setGlow(t.x, t.y, true);
 					}
 				}
