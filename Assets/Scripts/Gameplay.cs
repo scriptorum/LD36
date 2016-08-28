@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Spewnity;
 
 public class Gameplay : MonoBehaviour
 {
@@ -64,6 +65,12 @@ public class Gameplay : MonoBehaviour
 		}
 	}
 
+	public void fail(string msg)
+	{
+		SoundManager.instance.Play("deny");
+		messageBar.setMessage(msg);
+	}
+
 	public void mouseOver(Tile tile)
 	{
 		if(gameOver) return;
@@ -72,6 +79,7 @@ public class Gameplay : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
 			nextTurn();
+			// TODO SFX
 			return;
 		}
 
@@ -81,7 +89,7 @@ public class Gameplay : MonoBehaviour
 			// Road cannot start on village or replace roads
 			if(tile.type.isVillage || tile.hasRoad)
 			{
-				messageBar.setMessage("That area already has a sufficient road system.");
+				fail("That area already has a sufficient road system.");
 				return;
 			}
 
@@ -95,8 +103,8 @@ public class Gameplay : MonoBehaviour
 			}
 			if(!allowed)
 			{
-				if(roadsPlaced == 0) messageBar.setMessage("Your first road must be next to a village.");
-				else messageBar.setMessage("That area is not adjacent to your road network.");
+				if(roadsPlaced == 0) fail("Your first road must be next to a village.");
+				else fail("That area is not adjacent to your road network.");
 				return;
 			}
 			
@@ -104,8 +112,8 @@ public class Gameplay : MonoBehaviour
 			int cost = tile.type.roadCost;
 			if(bank < cost)
 			{
-				if(bank <= 0) messageBar.setMessage("You're broke. Hit SPACE to advance to next year.");
-				else messageBar.setMessage("It costs " + cost + " coins to build over " + tile.type.name);
+				if(bank <= 0) fail("You're broke. Hit SPACE to advance to next year.");
+				else fail("It costs " + cost + " coins to build over " + tile.type.name);
 				return;
 			}
 
@@ -129,6 +137,7 @@ public class Gameplay : MonoBehaviour
 						trans.custom = t.gameObject.transform;
 						income += t.type.income;
 						t.showKaching();
+						SoundManager.instance.Play("village");
 						board.setGlow(t.x, t.y, true);
 					}
 				}
@@ -139,6 +148,7 @@ public class Gameplay : MonoBehaviour
 
 			// Show dust
 			tile.showDust();
+			SoundManager.instance.Play("build");
 
 			if(villagesConnected >= board.villagesFound)
 			{
@@ -215,6 +225,7 @@ public class Gameplay : MonoBehaviour
 		{
 			messageBar.setMessage("Taxed out of business. You connected " + villagesConnected +
 			(villagesConnected == 1 ? " village." : " villages."));
+			SoundManager.instance.Play("lose");
 			gameOver = true;
 		}
 		else if(net >= 0) messageBar.setMessage("Year Summary: You gained " + (net == 1 ? "one coin" : net + " coins") + " after taxes.");

@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1000013288241834}
+  m_IsPrefabParent: 1
+--- !u!1 &1000013288241834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000011069821594}
+  - 114: {fileID: 114000013714988094}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000011069821594
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013288241834}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.0938365, y: 0.8005104, z: 0.17766032}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114000013714988094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013288241834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc38303baa894ac99c81168c05a0ce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPoolSize: 32
+  minPoolSize: 1
+  output: {fileID: 0}
+  sounds:
+  - name: build
+    clips:
+    - {fileID: 8300000, guid: 20f4b244e82e0407683643ef87a0965c, type: 3}
+    pitch: 1
+    pitchVariation: 0.4
+    volume: 0.6
+    volumeVariation: 0.1
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 1
+    source: {fileID: 0}
+  - name: deny
+    clips:
+    - {fileID: 8300000, guid: e7cac4c9477a44e30a107a1076a6731d, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  - name: click
+    clips:
+    - {fileID: 8300000, guid: fef51a9a6fc324d80a264de3e036e569, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  - name: lose
+    clips:
+    - {fileID: 8300000, guid: e5182f6ad837d4f079ede76a7fa49deb, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  - name: village
+    clips:
+    - {fileID: 8300000, guid: fc359a31246e84985ae9560c66b7ad00, type: 3}
+    pitch: 1
+    pitchVariation: 0.2
+    volume: 0.8
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  soundsInitialized: 1

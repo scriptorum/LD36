@@ -21,11 +21,8 @@ Build a trade network connecting all the villages.
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
 
-- [ ] SFX: build road
-- [ ] SFX: can't build road
-- [ ] SFX: gain village (x3)
+- [ ] SFX: year end
 - [ ] SFX: win game
-- [ ] SFX: lose game
 - [ ] SFX: start game
 - [ ] SFX: button click
 - [ ] Music: Main menu
@@ -43,8 +40,13 @@ It's loosely ordered by priority.
 - [ ] Additional mechanics: Resources? Will require additional level design and change to Tutorial.
 - [ ] Folks walking down roads
 - [ ] Better road art
+- [ ] SFX: different sounds for different sized villages or raising pitch for each subsequent
 - [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
 - [X] FX: Dust when building road
 - [X] FX: Village connected
+- [X] SFX: build road
+- [X] SFX: can't build road
+- [X] SFX: gain village
+- [X] SFX: lose game
 
 
