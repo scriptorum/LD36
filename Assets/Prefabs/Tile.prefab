@@ -291,7 +291,8 @@ MonoBehaviour:
     name: 
     sprite: {fileID: 0}
     isVillage: 0
-    cost: 0
+    roadCost: 0
+    income: 0
 --- !u!212 &212000010153114732
 SpriteRenderer:
   m_ObjectHideFlags: 1

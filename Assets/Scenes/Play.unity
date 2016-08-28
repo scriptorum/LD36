@@ -705,30 +705,45 @@ MonoBehaviour:
   tilePrefab: {fileID: 1000013431177578, guid: 5c2e75ea5c4b24152b2958820b0fc783, type: 2}
   terrainTypes:
   - name: plains
-    sprite: {fileID: 21300002, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    sprite: {fileID: 21300020, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
     isVillage: 0
-    cost: 1
+    roadCost: 2
+    income: 0
   - name: forest
     sprite: {fileID: 21300004, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
     isVillage: 0
-    cost: 2
+    roadCost: 4
+    income: 0
   - name: mountain
     sprite: {fileID: 21300000, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
     isVillage: 0
-    cost: 4
-  - name: village
+    roadCost: 8
+    income: 0
+  - name: water
+    sprite: {fileID: 21300026, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    isVillage: 0
+    roadCost: 12
+    income: 0
+  - name: village small
+    sprite: {fileID: 21300022, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    isVillage: 1
+    roadCost: 0
+    income: 3
+  - name: village medium
     sprite: {fileID: 21300016, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
     isVillage: 1
-    cost: 0
-  - name: water
-    sprite: {fileID: 21300018, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
-    isVillage: 0
-    cost: 8
+    roadCost: 0
+    income: 5
+  - name: village large
+    sprite: {fileID: 21300024, guid: c62d2b07b813e4d7ebde38900f8bbfd9, type: 3}
+    isVillage: 1
+    roadCost: 0
+    income: 8
   rows: 12
   cols: 17
   tileWidth: 1.1111112
   tileHeight: 0.96
-  contents: 000002200000000100004000003022000100302220002200300000022000020300000000130000000044040001111111004400400111131110440004003111000004400040000002220403000440003002200000024400000000000022044400000000000222
+  contents: 000002200000000100003000004022000100502220002200500000022000020400000000140000000033030001111111003300300111151110330003004111000003300030000002220306000330006002200000023300000000000022033300000000000222
   editMode: 0
 --- !u!4 &1393869580
 Transform:
@@ -799,10 +814,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: CoinEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  bank: 0
-  income: 0
-  tax: 0
-  drawingRoad: 0
   turn: 0
   gameOver: 0
   roadsPlaced: 0

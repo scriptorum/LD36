@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c62d2b07b813e4d7ebde38900f8bbfd9
-timeCreated: 1472322114
+timeCreated: 1472353371
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -14,6 +14,10 @@ TextureImporter:
     21300014: river
     21300016: village
     21300018: water
+    21300020: grass
+    21300022: small village
+    21300024: large village
+    21300026: terrain_7
   serializedVersion: 3
   mipmaps:
     mipMapMode: 0
@@ -66,24 +70,24 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 50
+        y: 58
+        width: 50.25
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: plains
+      name: grass
       rect:
         serializedVersion: 2
         x: 50
-        y: 0
+        y: 58
         width: 50
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -92,11 +96,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 100
-        y: 0
-        width: 50
+        y: 58
+        width: 50.25
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -105,11 +109,24 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 150
-        y: 0
-        width: 50
+        y: 58
+        width: 50.25
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: small village
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50.25
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -117,25 +134,38 @@ TextureImporter:
       name: village
       rect:
         serializedVersion: 2
-        x: 200
+        x: 50
         y: 0
         width: 50
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: water
+      name: large village
       rect:
         serializedVersion: 2
-        x: 250
+        x: 100
         y: 0
-        width: 50
+        width: 50.25
         height: 58
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: terrain_7
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 0
+        width: 50.25
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

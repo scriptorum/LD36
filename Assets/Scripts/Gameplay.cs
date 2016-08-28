@@ -16,7 +16,6 @@ public class Gameplay : MonoBehaviour
 	public CoinEvent incomeChanged;
 	public CoinEvent taxChanged;
 
-	public bool drawingRoad = false;
 	public int turn;
 	public bool gameOver = false;
 	public int roadsPlaced = 0;
@@ -47,40 +46,9 @@ public class Gameplay : MonoBehaviour
 			nextTurn();
 			return;
 		}
-			
-//		// VERIFY NEIGHBORS TEST
-//		if(Input.GetMouseButtonDown(1))
-//		{
-//			// Reset glow on all tiles
-//			board.clearGlow();
-//
-//			// Get all tile neighbors
-//			List<Tile> neighbors = board.getNeighbors(tile.x, tile.y);
-//
-//			// Set glow on these tiles
-//			foreach(Tile n in neighbors) board.setGlow(n.x, n.y, true);
-//		}
-
-		// While drawing road
-		if(drawingRoad)
-		{
-			// Complete road
-			if(Input.GetMouseButtonUp(0))
-			{
-				// TODO Affix roads, adjust cities, get points
-				drawingRoad = false;
-			}
-
-			// Cancel road
-			else if(Input.GetMouseButtonDown(1))
-			{
-				// TODO Remove roads
-				drawingRoad = false;
-			}
-		}
 
 		// Start drawing road
-		else if(Input.GetMouseButtonDown(0))
+		if(Input.GetMouseButtonDown(0))
 		{
 			// Road cannot start on village or replace roads
 			if(tile.type.isVillage || tile.hasRoad) return;
@@ -96,10 +64,11 @@ public class Gameplay : MonoBehaviour
 			if(!allowed) return;
 			
 			// Verify you can afford it
-			int cost = tile.type.cost;
+			int cost = tile.type.roadCost;
 			if(bank < cost)
 			{
 				Debug.Log("Not enough ancient coin tech.");
+				// TODO Flash bank balance and make noise
 				return;
 			}
 
@@ -112,7 +81,7 @@ public class Gameplay : MonoBehaviour
 					t.hasRoad = true;
 					if(!t.hasGlow)
 					{
-						income++;
+					income += t.type.income;
 						board.setGlow(t.x, t.y, true);
 					}
 				}
@@ -161,7 +130,6 @@ public class Gameplay : MonoBehaviour
 		if(bank < 0)
 		{
 			gameOver = true;
-			Debug.Log("Game over!");
 			// TODO Show gameover screen
 		}
 	}

@@ -211,7 +211,8 @@ public class TerrainType
 	public string name;
 	public Sprite sprite;
 	public bool isVillage;
-	public int cost;
+	public int roadCost;
+	public int income;
 }
 
 	
