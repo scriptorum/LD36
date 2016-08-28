@@ -38,6 +38,9 @@ public class Gameplay : MonoBehaviour
 
 	void Start()
 	{
+		SoundManager.instance.Stop();
+		SoundManager.instance.Play("start");
+
 		bank = STARTING_BANK;
 		tax = 1;
 		income = 0;
@@ -152,6 +155,7 @@ public class Gameplay : MonoBehaviour
 
 			if(villagesConnected >= board.villagesFound)
 			{
+				SoundManager.instance.Play("win");
 				messageBar.setMessage("You did it! You're a master trader!");
 				gameOver = true;
 			}
@@ -225,11 +229,17 @@ public class Gameplay : MonoBehaviour
 		{
 			messageBar.setMessage("Taxed out of business. You connected " + villagesConnected +
 			(villagesConnected == 1 ? " village." : " villages."));
+			SoundManager.instance.Stop();
 			SoundManager.instance.Play("lose");
 			gameOver = true;
 		}
-		else if(net >= 0) messageBar.setMessage("Year Summary: You gained " + (net == 1 ? "one coin" : net + " coins") + " after taxes.");
-		else messageBar.setMessage("Year Summary: You lost " + (net == -1 ? "one coin" : -net + " coins") + " after taxes");
+		else
+		{
+			if(net >= 0) messageBar.setMessage("Year Summary: You gained " + (net == 1 ? "one coin" : net + " coins") + " after taxes.");
+			else messageBar.setMessage("Year Summary: You lost " + (net == -1 ? "one coin" : -net + " coins") + " after taxes");
+			SoundManager.instance.Stop();
+			SoundManager.instance.Play("year");
+		}
 	}
 }
 

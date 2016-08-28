@@ -21,11 +21,6 @@ Build a trade network connecting all the villages.
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
 
-- [ ] SFX: year end
-- [ ] SFX: win game
-- [ ] SFX: start game
-- [ ] SFX: button click
-- [ ] Music: Main menu
 - [ ] Main menu buttons
 - [ ] Main menu background
 - [ ] Help button/drop down interface
@@ -34,7 +29,12 @@ It's loosely ordered by priority.
 - [ ] Separate bank/income/tax for better coinbank anim?
 - [ ] Colorize text when income < tax
 - [ ] Tutorial
+- [ ] Rerecord musical queues with longer tail
+- [ ] Put "R/ESC" tip on message after showing victory and hold it there
 - [ ] Random level mode
+- [ ] SFX: Improve village clang - it's too brusque
+- [ ] SFX: road building, make it softer
+- [ ] SFX: Add crash to start
 - [ ] Improve coin art
 - [ ] Music: Play
 - [ ] Additional mechanics: Resources? Will require additional level design and change to Tutorial.
@@ -48,5 +48,10 @@ It's loosely ordered by priority.
 - [X] SFX: can't build road
 - [X] SFX: gain village
 - [X] SFX: lose game
+- [X] SFX: button click
+- [X] Music: Main menu
+- [X] SFX: year end
+- [X] SFX: win game
+- [X] SFX: start game
 
 

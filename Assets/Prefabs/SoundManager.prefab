@@ -115,4 +115,64 @@ MonoBehaviour:
     looping: 0
     usePool: 0
     source: {fileID: 0}
+  - name: theme-intro
+    clips:
+    - {fileID: 8300000, guid: 77d2a048acd9f438d9391373da9dfbb0, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  - name: theme-loop
+    clips:
+    - {fileID: 8300000, guid: 4f1184ed009e0416b9099b16737af3ff, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 1
+    usePool: 0
+    source: {fileID: 0}
+  - name: year
+    clips:
+    - {fileID: 8300000, guid: d9754dabb86344fee8b1752ef3b82f26, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  - name: start
+    clips:
+    - {fileID: 8300000, guid: c3f07b83352924ef1b2e39ed116013d9, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 0
+    usePool: 0
+    source: {fileID: 0}
+  - name: win
+    clips:
+    - {fileID: 8300000, guid: 50aa532195d40473488da4d1c1aa06d9, type: 3}
+    pitch: 1
+    pitchVariation: 0
+    volume: 1
+    volumeVariation: 0
+    pan: 0
+    panVariation: 0
+    looping: 1
+    usePool: 0
+    source: {fileID: 0}
   soundsInitialized: 1

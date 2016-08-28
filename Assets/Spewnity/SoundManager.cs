@@ -35,10 +35,13 @@ namespace Spewnity
 				soundsInitialized = true;
 			}
 
+			#if DEBUG
 			foreach(Sound sound in sounds)
 			{
-				if(sound.usePool && sound.looping) Debug.Log("Not recommended to use the audio source pool for a looping sound");
+				if(sound.usePool && sound.looping) 
+					Debug.Log(sound.name + " is looping and pooling. Both simultaneously are not recommended.");
 			}
+			#endif
 		}
 
 		void Awake()
@@ -180,7 +183,11 @@ namespace Spewnity
 		public void Stop()
 		{
 			// Stop all sounds from playing
-			foreach(Sound sound in sounds) sound.source.Stop();
+			foreach(Sound sound in sounds) 
+			{
+				if(sound.source != null)
+					sound.source.Stop();
+			}
 
 			// If using pooling or callbacks, coroutines may still be running - prevent them from finishing
 			StopAllCoroutines();
