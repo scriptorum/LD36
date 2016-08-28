@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Gameplay : MonoBehaviour
 {
-	public Text coinText;
-	public bool drawingRoad = false;
-	public int coins = 0;
-	public int turn;
-	public int income;
-	public int taxes;
-	public bool gameOver = false;
-	public int roadsPlaced = 0;
+	private static int STARTING_BANK = 10;
 
 	private Board board;
+	private int _bank;
+	private int _income;
+	private int _tax;
+
+	public CoinEvent bankChanged;
+	public CoinEvent incomeChanged;
+	public CoinEvent taxChanged;
+
+	public bool drawingRoad = false;
+	public int turn;
+	public bool gameOver = false;
+	public int roadsPlaced = 0;
 
 	void Awake()
 	{
@@ -24,10 +29,8 @@ public class Gameplay : MonoBehaviour
 
 	void Start()
 	{
-		coins = 10;
-		adjustCoins(0);
-
-		taxes = 1;
+		bank = STARTING_BANK;
+		tax = 1;
 		income = 0;
 	}
 
@@ -92,51 +95,79 @@ public class Gameplay : MonoBehaviour
 			}
 			if(!allowed) return;
 			
+			// Verify you can afford it
+			int cost = tile.type.cost;
+			if(bank < cost)
+			{
+				Debug.Log("Not enough ancient coin tech.");
+				return;
+			}
+
+			// Charge your account
+			bank -= cost;
+
 			// Adjacent villages now have roads and level up
 			foreach(Tile t in neighbors) if(t.type.isVillage)
 				{
 					t.hasRoad = true;
-					board.setGlow(t.x, t.y, true);
+					if(!t.hasGlow)
+					{
+						income++;
+						board.setGlow(t.x, t.y, true);
+					}
 				}
-
-			// Incur the cost
-			int cost = tile.type.cost;
-			if(adjustCoins(-cost) == false) return;
-
-			// Place road
+				
+			// Finnaly, place the road
 			board.setRoad(tile.x, tile.y, true);
 			roadsPlaced++;
 		}
 	}
 
-	// Pass negative to spend coins
-	// Returns false if you can't cover the cost
-	public bool adjustCoins(int amount)
+	public int bank
 	{
-		int newSum = coins + amount;
-		if(newSum < 0)
-		{
-			Debug.Log("Out of ancient coin tech.");
-			return false;
+		get { return  _bank; }
+		set
+		{ 
+			_bank = value;
+			bankChanged.Invoke(_bank);
 		}
+	}
 
-		coins = newSum;
+	public int income
+	{
+		get { return  _income; }
+		set
+		{ 
+			_income = value;
+			incomeChanged.Invoke(_income);
+		}
+	}
 
-		coinText.text = coins.ToString();
-
-		return true;
+	public int tax
+	{
+		get { return  _tax; }
+		set
+		{ 
+			_tax = value;
+			taxChanged.Invoke(_tax);
+		}
 	}
 
 	public void nextTurn()
 	{
 		turn++;
-		adjustCoins(income);
-		if(adjustCoins(taxes) == false)
+		bank += income;
+		bank -= tax++;
+		if(bank < 0)
 		{
 			gameOver = true;
+			Debug.Log("Game over!");
 			// TODO Show gameover screen
 		}
-		taxes++;
 	}
 }
-	
+
+[System.Serializable]
+public class CoinEvent: UnityEvent<int>
+{
+}
