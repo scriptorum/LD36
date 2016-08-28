@@ -21,8 +21,6 @@ Build a trade network connecting all the villages.
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
 
-- [ ] FX: Animate coins in coinbank
-- [ ] FX: Dust when building road
 - [ ] FX: Village connected
 - [ ] SFX: build road
 - [ ] SFX: can't build road
@@ -36,13 +34,17 @@ It's loosely ordered by priority.
 - [ ] Main menu background
 - [ ] Help button/drop down interface
 - [ ] Levels
-- [ ] Separate bank/income/tax for better coinbank anim
+- [ ] Add animation curve to message popup
+- [ ] Separate bank/income/tax for better coinbank anim?
 - [ ] Colorize text when income < tax
 - [ ] Tutorial
 - [ ] Random level mode
+- [ ] Improve coin art
 - [ ] Music: Play
-- [ ] Better road art
+- [ ] Additional mechanics: Resources? Will require additional level design and change to Tutorial.
 - [ ] Folks walking down roads
-- [ ] Additional mechanics: Resources
+- [ ] Better road art
+- [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
+- [X] FX: Dust when building road
 
 

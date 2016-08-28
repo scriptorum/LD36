@@ -15,6 +15,8 @@ public class Gameplay : MonoBehaviour
 	private int _bank;
 	private int _income;
 	private int _tax;
+	private int _kingsVault;
+	private Transaction trans = new Transaction();
 
 	public int turn;
 	public bool gameOver = false;
@@ -25,6 +27,7 @@ public class Gameplay : MonoBehaviour
 	public CoinEvent bankChanged;
 	public CoinEvent incomeChanged;
 	public CoinEvent taxChanged;
+	public CoinEvent kingsVaultChanged;
 
 	void Awake()
 	{
@@ -37,18 +40,24 @@ public class Gameplay : MonoBehaviour
 		bank = STARTING_BANK;
 		tax = 1;
 		income = 0;
+		kingsVault = 0;
 		villagesConnected = 0;
 		messageBar.setMessage("Network all the villages!");
 	}
 
 	void Update()
 	{
+		if(Input.GetKeyUp(KeyCode.C))
+		{
+			trans.source = TransactionSource.Bank;
+			kingsVault++;
+		}
+		
 		if(Input.GetKeyDown(KeyCode.R))
 		{
 //			if(gameOver)
 			SceneManager.LoadScene("Play");
 		}
-
 		else if(Input.GetKeyDown(KeyCode.Escape))
 		{
 			SceneManager.LoadScene("Main");
@@ -86,8 +95,7 @@ public class Gameplay : MonoBehaviour
 			}
 			if(!allowed)
 			{
-				if(roadsPlaced == 0)
-					messageBar.setMessage("Your first road must be next to a village.");
+				if(roadsPlaced == 0) messageBar.setMessage("Your first road must be next to a village.");
 				else messageBar.setMessage("That area is not adjacent to your road network.");
 				return;
 			}
@@ -98,14 +106,13 @@ public class Gameplay : MonoBehaviour
 			{
 				if(bank <= 0) messageBar.setMessage("You're broke. Hit SPACE to advance to next year.");
 				else messageBar.setMessage("It costs " + cost + " coins to build over " + tile.type.name);
-
-				// TODO Flash bank balance and make noise
-
 				return;
 			}
 
 			// Charge your account
 			bank -= cost;
+			trans.source = TransactionSource.Bank;
+			kingsVault += cost;
 
 			// Adjacent villages now have roads and level up
 			int incomeGainedThisTurn = 0;
@@ -115,9 +122,11 @@ public class Gameplay : MonoBehaviour
 					t.hasRoad = true;
 					if(!t.hasGlow)
 					{
-					villagesConnected++;
+						villagesConnected++;
 						villagesConnectedThisTurn++;
 						incomeGainedThisTurn += t.type.income;
+						trans.source = TransactionSource.Custom;
+						trans.custom = t.gameObject.transform;
 						income += t.type.income;
 						board.setGlow(t.x, t.y, true);
 					}
@@ -126,6 +135,9 @@ public class Gameplay : MonoBehaviour
 			// Finally, place the road
 			board.setRoad(tile.x, tile.y, true);
 			roadsPlaced++;
+
+			// Show dust
+			tile.showDust();
 
 			if(villagesConnected >= board.villagesFound)
 			{
@@ -145,7 +157,9 @@ public class Gameplay : MonoBehaviour
 		set
 		{ 
 			_bank = value;
-			bankChanged.Invoke(_bank);
+			trans.amount = value;
+			bankChanged.Invoke(trans);
+			trans.source = TransactionSource.None;
 		}
 	}
 
@@ -155,7 +169,9 @@ public class Gameplay : MonoBehaviour
 		set
 		{ 
 			_income = value;
-			incomeChanged.Invoke(_income);
+			trans.amount = value;
+			incomeChanged.Invoke(trans);
+			trans.source = TransactionSource.None;
 		}
 	}
 
@@ -165,7 +181,21 @@ public class Gameplay : MonoBehaviour
 		set
 		{ 
 			_tax = value;
-			taxChanged.Invoke(_tax);
+			trans.amount = value;
+			taxChanged.Invoke(trans);
+			trans.source = TransactionSource.None;
+		}	
+	}
+
+	public int kingsVault
+	{
+		get { return  _kingsVault; }
+		set
+		{ 
+			_kingsVault = value;
+			trans.amount = value;
+			kingsVaultChanged.Invoke(trans);
+			trans.source = TransactionSource.None;
 		}
 	}
 
@@ -173,23 +203,25 @@ public class Gameplay : MonoBehaviour
 	{
 		int net = income - tax;
 		turn++;
+		trans.source = TransactionSource.Income;
 		bank += income;
 		bank -= tax;
+		trans.source = TransactionSource.Bank;
+		kingsVault += tax;
+		trans.source = TransactionSource.KingsVault;
 		tax += TAX_RATE;
 		if(bank < 0)
 		{
-			messageBar.setMessage("Taxed out of business. You connected " + villagesConnected + 
-				(villagesConnected == 1 ? " village." : " villages."));
+			messageBar.setMessage("Taxed out of business. You connected " + villagesConnected +
+			(villagesConnected == 1 ? " village." : " villages."));
 			gameOver = true;
-			// TODO Show gameover screen
 		}
-		else if(net >= 0)
-			messageBar.setMessage("Year Summary: You gained " + (net == 1 ? "one coin" : net + " coins") + " after taxes.");
+		else if(net >= 0) messageBar.setMessage("Year Summary: You gained " + (net == 1 ? "one coin" : net + " coins") + " after taxes.");
 		else messageBar.setMessage("Year Summary: You lost " + (net == -1 ? "one coin" : -net + " coins") + " after taxes");
 	}
 }
 
 [System.Serializable]
-public class CoinEvent: UnityEvent<int>
+public class CoinEvent: UnityEvent<Transaction>
 {
 }

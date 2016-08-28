@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Spewnity;
 
 public class Tile : MonoBehaviour
 {
@@ -12,9 +13,11 @@ public class Tile : MonoBehaviour
 	public bool hasGlow = false;
 	public bool hasRoad = false;
 	public TerrainType type;
+	private ParticleSystem dustFX;
 
 	void Awake()
 	{
+		dustFX = gameObject.GetChild("Dust").GetComponent<ParticleSystem>();
 	}
 
 	void Start()
@@ -28,6 +31,11 @@ public class Tile : MonoBehaviour
 	void OnMouseOver()
 	{
 		Tile.onMouseOver.Invoke(this);
+	}
+
+	public void showDust()
+	{
+		dustFX.Play();
 	}
 }
 
