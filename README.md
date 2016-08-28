@@ -21,14 +21,13 @@ Build a trade network connecting all the villages.
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
 
-- [ ] Help button/drop down interface
+- [ ] Random level mode
 - [ ] Levels
 - [ ] Add animation curve to message popup
 - [ ] Separate bank/income/tax for better coinbank anim?
 - [ ] Colorize text when income < tax
-- [ ] Tutorial
 - [ ] Put "R/ESC" tip on message after showing victory and hold it there
-- [ ] Random level mode
+- [ ] Tutorial
 - [ ] SFX: Add crash to start
 - [ ] Rerecord musical queues with longer tail
 - [ ] Improve coin art
@@ -38,6 +37,7 @@ It's loosely ordered by priority.
 - [ ] Better road art
 - [ ] SFX: different sounds for different sized villages or raising pitch for each subsequent
 - [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
+- [C] Help button/drop down interface
 - [X] FX: Dust when building road
 - [X] FX: Village connected
 - [X] SFX: build road
