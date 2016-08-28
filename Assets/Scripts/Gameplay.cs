@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class Gameplay : MonoBehaviour
 {
 	private static int STARTING_BANK = 10;
+	private static int TAX_RATE = 2;
 
 	private Board board;
 	private int _bank;
@@ -126,7 +127,8 @@ public class Gameplay : MonoBehaviour
 	{
 		turn++;
 		bank += income;
-		bank -= tax++;
+		bank -= tax;
+		tax += TAX_RATE;
 		if(bank < 0)
 		{
 			gameOver = true;
