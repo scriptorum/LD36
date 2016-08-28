@@ -8,6 +8,11 @@ public class Gameplay : MonoBehaviour
 	public Text coinText;
 	public bool drawingRoad = false;
 	public int coins = 0;
+	public int turn;
+	public int income;
+	public int taxes;
+	public bool gameOver = false;
+	public int roadsPlaced = 0;
 
 	private Board board;
 
@@ -19,7 +24,11 @@ public class Gameplay : MonoBehaviour
 
 	void Start()
 	{
-		coins = 20;
+		coins = 10;
+		adjustCoins(0);
+
+		taxes = 1;
+		income = 0;
 	}
 
 	void Update()
@@ -28,18 +37,26 @@ public class Gameplay : MonoBehaviour
 
 	public void mouseOver(Tile tile)
 	{
-		// VERIFY NEIGHBORS TEST
-		if(Input.GetMouseButtonDown(1))
+		if(gameOver) return;
+		
+		if(Input.GetKeyDown(KeyCode.Space))
 		{
-			// Reset glow on all tiles
-			board.clearGlow();
-
-			// Get all tile neighbors
-			List<Tile> neighbors = board.getNeighbors(tile.x, tile.y);
-
-			// Set glow on these tiles
-			foreach(Tile n in neighbors) board.setGlow(n.x, n.y, true);
+			nextTurn();
+			return;
 		}
+			
+//		// VERIFY NEIGHBORS TEST
+//		if(Input.GetMouseButtonDown(1))
+//		{
+//			// Reset glow on all tiles
+//			board.clearGlow();
+//
+//			// Get all tile neighbors
+//			List<Tile> neighbors = board.getNeighbors(tile.x, tile.y);
+//
+//			// Set glow on these tiles
+//			foreach(Tile n in neighbors) board.setGlow(n.x, n.y, true);
+//		}
 
 		// While drawing road
 		if(drawingRoad)
@@ -62,22 +79,34 @@ public class Gameplay : MonoBehaviour
 		// Start drawing road
 		else if(Input.GetMouseButtonDown(0))
 		{
-			if(adjustCoins(-tile.terrainType.cost) == false)
-				return;
-			
-			// Road cannot start on village, villages are assumed to have roads
-			if(tile.terrainType.isVillage)
+			// Road cannot start on village or replace roads
+			if(tile.type.isVillage || tile.hasRoad) return;
+
+			// If first road, must be next to village, otherwise next to existing road or connected village.
+			bool allowed = false;
+			List<Tile> neighbors = board.getNeighbors(tile.x, tile.y);
+			foreach(Tile t in neighbors)
 			{
-				// TODO This is not a village, but does it have a road?
-				return;
+				if(t.type.isVillage && roadsPlaced == 0) allowed = true;
+				else if(t.hasRoad) allowed = true;				
 			}
-				
-//			drawingRoad = true;
+			if(!allowed) return;
+			
+			// Adjacent villages now have roads and level up
+			foreach(Tile t in neighbors) if(t.type.isVillage)
+				{
+					t.hasRoad = true;
+					board.setGlow(t.x, t.y, true);
+				}
+
+			// Incur the cost
+			int cost = tile.type.cost;
+			if(adjustCoins(-cost) == false) return;
 
 			// Place road
 			board.setRoad(tile.x, tile.y, true);
+			roadsPlaced++;
 		}
-
 	}
 
 	// Pass negative to spend coins
@@ -96,6 +125,18 @@ public class Gameplay : MonoBehaviour
 		coinText.text = coins.ToString();
 
 		return true;
+	}
+
+	public void nextTurn()
+	{
+		turn++;
+		adjustCoins(income);
+		if(adjustCoins(taxes) == false)
+		{
+			gameOver = true;
+			// TODO Show gameover screen
+		}
+		taxes++;
 	}
 }
 	

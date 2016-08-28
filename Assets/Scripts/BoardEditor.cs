@@ -35,7 +35,7 @@ public class BoardEditor : MonoBehaviour
 
 		if(Input.GetKeyDown(KeyCode.L))
 		{
-			tile.glow = !tile.glow;
+			tile.hasGlow = !tile.hasGlow;
 			board.updateTile(tile.x, tile.y);
 		}
 	}

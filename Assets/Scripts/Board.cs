@@ -88,9 +88,9 @@ public class Board : MonoBehaviour
 	{
 		GameObject tileGO = GameObject.Find(getNameFor(x, y));
 		Tile tile = tileGO.GetComponent<Tile>();
-		tile.glow = active;
+		tile.hasGlow = active;
 		GameObject glowGO = tileGO.GetChild("Glow");
-		glowGO.SetActive(tile.glow);
+		glowGO.SetActive(tile.hasGlow);
 	}
 
 	public void clearGlow()
@@ -116,8 +116,8 @@ public class Board : MonoBehaviour
 		{
 			GameObject roadGO = tileGO.GetChild("Road" + index++);
 			bool showRoad = tile.hasRoad;
-			if(tile.terrainType.isVillage) showRoad = false;
-			if(n == null || !n.hasRoad) showRoad = false;				
+			if(tile.type.isVillage) showRoad = false;
+			if(n == null || !(n.hasRoad || n.type.isVillage)) showRoad = false;				
 			roadGO.SetActive(showRoad);
 
 			if(showRoad && updateNeighbors)
@@ -162,8 +162,7 @@ public class Board : MonoBehaviour
 		Tile tile = tileGO.GetComponent<Tile>();
 		tile.x = x;
 		tile.y = y;
-		tile.terrainType = terrainTypes[terrainId];
-		tile.hasRoad = tile.terrainType.isVillage;
+		tile.type = terrainTypes[terrainId];
 		updateTile(x, y);
 	}
 
@@ -177,7 +176,7 @@ public class Board : MonoBehaviour
 		sr.sprite = spr;
 		Tile tile = go.GetComponent<Tile>();
 		GameObject glowGO = go.GetChild("Glow");
-		glowGO.SetActive(tile.glow);
+		glowGO.SetActive(tile.hasGlow);
 		updateRoad(x, y);
 	}
 
