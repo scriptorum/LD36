@@ -20,6 +20,12 @@ namespace Spewnity
 		public LoadSceneMode mode = LoadSceneMode.Single;
 		public UnityEvent clickEvent;
 
+		void Awake()
+		{
+			if(gameObject.GetComponent<Collider2D>() == null)
+				throw new UnityException("GameObject + " + gameObject.name + " needs a collider to work");
+		}
+
 		void Update()
 		{
 			foreach(KeyCode key in keys)
@@ -39,8 +45,7 @@ namespace Spewnity
 
 		public void transition()
 		{
-			if(clickSoundName != null && clickSoundName != "" && SoundManager.instance != null)
-				SoundManager.instance.Play(clickSoundName);
+			if(clickSoundName != null && clickSoundName != "" && SoundManager.instance != null) SoundManager.instance.Play(clickSoundName);
 
 			clickEvent.Invoke();
 

@@ -59,6 +59,12 @@ namespace Spewnity
 			actions.Clear();
 		}
 
+		public void Reset()
+		{
+			Cancel();
+			Clear();
+		}
+
 		// Returns a qualified, non-null game object, either the supplied parameter (if non-null) or the "selected" game object.
 		// If the non-null, this may also "select" the game object.
 		private GameObject Qualify(GameObject go, bool alsoSelectIt = true)

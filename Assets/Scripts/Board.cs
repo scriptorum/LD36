@@ -13,6 +13,7 @@ public class Board : MonoBehaviour
 	public float tileWidth = 50f;
 	public float tileHeight = 58f;
 	public string contents = "";
+	public int villagesFound = 0;
 	public bool editMode = true;
 
 	void Awake()
@@ -35,6 +36,7 @@ public class Board : MonoBehaviour
 	{
 		contents = "";
 		terrain.EachPosition((x, y) => contents += terrain[x, y].ToString(), (int) Map<int>.Traversal.YFirst);
+		updateVillageCount();
 	}
 
 	public void deserializeContents()
@@ -42,6 +44,16 @@ public class Board : MonoBehaviour
 		Debug.Assert(contents.Length == terrain.width * terrain.height, 
 			"Expected contents length of " + (terrain.width * terrain.height) + " but found " + contents.Length);
 		terrain.EachPosition((x, y) => terrain[x, y] = int.Parse(contents[getContentsPosition(x, y)].ToString()));
+		updateVillageCount();
+	}
+
+	public void updateVillageCount()
+	{
+		villagesFound = 0;
+		terrain.EachItem((int i) =>
+		{
+			if(terrainTypes[i].isVillage) villagesFound++;
+		});
 	}
 
 	// If sorted, six results are returned, which may include nulls
@@ -120,8 +132,7 @@ public class Board : MonoBehaviour
 			if(n == null || !(n.hasRoad || n.type.isVillage)) showRoad = false;				
 			roadGO.SetActive(showRoad);
 
-			if(showRoad && updateNeighbors)
-				updateRoad(n.x, n.y, false);
+			if(showRoad && updateNeighbors) updateRoad(n.x, n.y, false);
 		}
 	}
 
@@ -185,17 +196,16 @@ public class Board : MonoBehaviour
 		return terrain[x, y];
 	}
 
-	void OnValidate()
-	{				
-		if(terrain == null) return;
-
-		deserializeContents();
-		updateTiles();
-	}
-
-	//	public string getNameForTerrainId(int terrainId)
+	// Deserializes incorrectly, not worth the refactor, move on
+	//	void OnValidate()
 	//	{
-	//		return terrainTypes[terrainId].name;
+	//		if(terrain == null) return;
+	//		if(contents != priorContents)
+	//		{
+	//			priorContents = contents;
+	//			deserializeContents();
+	//			updateTiles();
+	//		}
 	//	}
 
 	private string getNameFor(int x, int y)
