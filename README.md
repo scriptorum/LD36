@@ -36,7 +36,7 @@ It's loosely ordered by priority.
 - [ ] Better road art
 - [ ] SFX: different sounds for different sized villages or raising pitch for each subsequent
 - [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
-- [C] Help button/drop down interface
+- [X] Help button/drop down interface
 - [X] FX: Dust when building road
 - [X] FX: Village connected
 - [X] SFX: build road
