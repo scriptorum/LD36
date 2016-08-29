@@ -46,7 +46,7 @@ public class Gameplay : MonoBehaviour
 		income = 0;
 		kingsVault = 0;
 		villagesConnected = 0;
-		messageBar.setMessage("Network all the villages!");
+		messageBar.setMessage("Network all the villages! [H] for help.");
 	}
 
 	void Update()

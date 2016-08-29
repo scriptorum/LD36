@@ -16,6 +16,8 @@ public class Help : MonoBehaviour
 
 	void Update()
 	{
+		if(Input.GetKeyDown(KeyCode.H))
+			OnMouseDown();
 	}
 
 	void OnMouseDown()

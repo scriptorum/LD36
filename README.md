@@ -21,7 +21,6 @@ Build a trade network connecting all the villages.
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
 
-- [ ] Random level mode
 - [ ] Levels
 - [ ] Add animation curve to message popup
 - [ ] Separate bank/income/tax for better coinbank anim?
@@ -53,5 +52,7 @@ It's loosely ordered by priority.
 - [X] Main menu background
 - [X] SFX: Improve village clang - it's too brusque
 - [X] SFX: road building, make it softer
+- [X] Random level mode
+- [ ] More informative help screen since you're out of time to do a tute
 
 
