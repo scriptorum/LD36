@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
 
 	void Start()
 	{
+		SoundManager.instance.Stop();
 		SoundManager.instance.Play("theme-intro", (s)=> SoundManager.instance.Play("theme-loop"));
 	}
 

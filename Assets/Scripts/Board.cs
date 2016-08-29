@@ -5,6 +5,8 @@ using Spewnity;
 
 public class Board : MonoBehaviour
 {
+	public static string replay = "";
+
 	public GameObject tilePrefab;
 	public TerrainType[] terrainTypes;
 	public Map<int> terrain;
@@ -23,8 +25,26 @@ public class Board : MonoBehaviour
 
 	void Start()
 	{
-		if(contents == "") serializeContents();
-		else deserializeContents();
+		if(TransitionToScene.data == "random")
+		{
+			if(replay == "")
+			{
+				randomizeMap();
+				serializeContents();
+				replay = contents;
+			}
+			else
+			{
+				contents = replay;
+				deserializeContents();
+			}
+		}
+		else
+		{
+			if(contents == "") serializeContents();
+			else deserializeContents();
+			replay = "";
+		}
 		updateTiles();
 	}
 
@@ -211,6 +231,47 @@ public class Board : MonoBehaviour
 	private string getNameFor(int x, int y)
 	{
 		return "tile-" + x + "-" + y;
+	}
+
+	private void randomizeMap()
+	{
+		int border = 1;
+
+		terrain.EachPosition((x, y) =>
+		{
+			int tile = 0;
+//			if(x >= border && y >= border && x < cols - border && y < rows - border)
+//			{
+			tile = Random.Range(0, 4);
+//			}
+			terrain[x, y] = tile;
+		});
+
+		List<int> villages = new List<int>();
+		int count = 5;
+		for(int terrainId = 4; terrainId <= 6; terrainId++)
+		{
+			count--;
+			int adjusted = count + Random.Range(-1, 2);
+			for(int i = 0; i < adjusted; i++)
+			{
+				villages.Add(terrainId);
+//				Debug.Log(count);
+			}
+		}
+
+		while(villages.Count > 0)
+		{			
+			int x = Random.Range(border, cols - border); 
+			int y = Random.Range(border, rows - border); 
+			if(y >= 10) continue;
+			if(x >= border && y >= border && x < cols - border && y < rows - border)
+			{
+				int v = villages[0];
+				villages.RemoveAt(0);
+				terrain[x, y] = v;
+			}
+		}
 	}
 }
 

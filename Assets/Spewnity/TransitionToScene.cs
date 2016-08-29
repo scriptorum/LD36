@@ -14,11 +14,14 @@ namespace Spewnity
 {
 	public class TransitionToScene : MonoBehaviour
 	{
+		public static string data;
+
 		public string clickSoundName = "";
 		public string sceneName;
 		public KeyCode[] keys;
 		public LoadSceneMode mode = LoadSceneMode.Single;
 		public UnityEvent clickEvent;
+		public string dataToForward = "";
 
 		void Awake()
 		{
@@ -45,6 +48,8 @@ namespace Spewnity
 
 		public void transition()
 		{
+			TransitionToScene.data = this.dataToForward;
+
 			if(clickSoundName != null && clickSoundName != "" && SoundManager.instance != null) SoundManager.instance.Play(clickSoundName);
 
 			clickEvent.Invoke();

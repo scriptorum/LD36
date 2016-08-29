@@ -59,11 +59,11 @@ public class Gameplay : MonoBehaviour
 		
 		if(Input.GetKeyDown(KeyCode.R))
 		{
-//			if(gameOver)
 			SceneManager.LoadScene("Play");
 		}
 		else if(Input.GetKeyDown(KeyCode.Escape))
 		{
+			Board.replay = "";
 			SceneManager.LoadScene("Main");
 		}
 	}
