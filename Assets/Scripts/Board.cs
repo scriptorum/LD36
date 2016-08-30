@@ -48,10 +48,6 @@ public class Board : MonoBehaviour
 		updateTiles();
 	}
 
-	void Update()
-	{
-	}
-
 	public void serializeContents()
 	{
 		contents = "";

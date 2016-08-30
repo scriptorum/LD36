@@ -48,13 +48,7 @@ public class Gameplay : MonoBehaviour
 	}
 
 	void Update()
-	{
-		if(Input.GetKeyUp(KeyCode.C))
-		{
-			trans.source = TransactionSource.Bank;
-			kingsVault++;
-		}
-		
+	{		
 		if(Input.GetKeyDown(KeyCode.R))
 		{
 			SceneManager.LoadScene("Play");
@@ -63,6 +57,16 @@ public class Gameplay : MonoBehaviour
 		{
 			Board.replay = "";
 			SceneManager.LoadScene("Main");
+		}
+		else if(Input.GetKeyDown(KeyCode.C))
+		{
+			messageBar.setMessage("Copied level to clipboard");
+			GUIUtility.systemCopyBuffer = board.contents;
+		}
+		else if(Input.GetKeyDown(KeyCode.P))
+		{
+			Board.replay = GUIUtility.systemCopyBuffer;
+			SceneManager.LoadScene("Play");
 		}
 	}
 
