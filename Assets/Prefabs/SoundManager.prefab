@@ -66,6 +66,7 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 1
+    delay: 0
     source: {fileID: 0}
   - name: deny
     clips:
@@ -78,6 +79,7 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: click
     clips:
@@ -90,6 +92,7 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: lose
     clips:
@@ -102,6 +105,7 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: village
     clips:
@@ -114,30 +118,33 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: theme-intro
     clips:
     - {fileID: 8300000, guid: 77d2a048acd9f438d9391373da9dfbb0, type: 3}
     pitch: 1
     pitchVariation: 0
-    volume: 1.5
+    volume: 2
     volumeVariation: 0
     pan: 0
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: theme-loop
     clips:
     - {fileID: 8300000, guid: 4f1184ed009e0416b9099b16737af3ff, type: 3}
     pitch: 1
     pitchVariation: 0
-    volume: 1.5
+    volume: 2
     volumeVariation: 0
     pan: 0
     panVariation: 0
     looping: 1
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: year
     clips:
@@ -150,6 +157,7 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: start
     clips:
@@ -162,6 +170,7 @@ MonoBehaviour:
     panVariation: 0
     looping: 0
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   - name: win
     clips:
@@ -174,5 +183,6 @@ MonoBehaviour:
     panVariation: 0
     looping: 1
     usePool: 0
+    delay: 0
     source: {fileID: 0}
   soundsInitialized: 1

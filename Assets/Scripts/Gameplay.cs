@@ -1,6 +1,4 @@
-﻿// TODO The game prevents you from connected 2 villages at once, on maps that support it.
-// TODO I've scene situations where your bank balance stays at one even though your taxes exceed your income, although it may be more of an issue of jamming the SPACE bar
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;

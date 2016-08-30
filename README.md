@@ -20,7 +20,6 @@ Build a trade network connecting all the villages.
 
 These are things I'd like to get in before the compo ends. Naturally, some won't make it. 
 It's loosely ordered by priority.
-
 - [ ] Levels
 - [ ] Add animation curve to message popup
 - [ ] Separate bank/income/tax for better coinbank anim?
@@ -36,6 +35,10 @@ It's loosely ordered by priority.
 - [ ] Better road art
 - [ ] SFX: different sounds for different sized villages or raising pitch for each subsequent
 - [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
+- [X] BUGFIX: Slight improvement to audio timing glitch when playing theme. #WebGLProblems
+- [X] BUGFIX: Theme volume levels were mixed incorrectly, sounds better now.
+- [X] BUGFIX: Less chance of game getting cropped or looking funny in full screen.
+- [X] BUGFIX: Made some of the text elements sharper, not sure it's better. :)
 - [X] Help button/drop down interface
 - [X] FX: Dust when building road
 - [X] FX: Village connected
@@ -53,6 +56,6 @@ It's loosely ordered by priority.
 - [X] SFX: Improve village clang - it's too brusque
 - [X] SFX: road building, make it softer
 - [X] Random level mode
-- [ ] More informative help screen since you're out of time to do a tute
+- [X] More informative help screen since you're out of time to do a tute
 
 
