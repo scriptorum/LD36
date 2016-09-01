@@ -6,6 +6,7 @@ using Spewnity;
 public class Board : MonoBehaviour
 {
 	public static string replay = "";
+	public static int seed = 0;
 
 	public GameObject tilePrefab;
 	public TerrainType[] terrainTypes;
@@ -16,7 +17,7 @@ public class Board : MonoBehaviour
 	public float tileHeight = 58f;
 	public string contents = "";
 	public int villagesFound = 0;
-	public bool editMode = true;
+	public bool editMode = false;
 
 	void Awake()
 	{
@@ -25,27 +26,40 @@ public class Board : MonoBehaviour
 
 	void Start()
 	{
-		if(TransitionToScene.data == "random")
+		// Deserialize contents
+		if(TransitionToScene.data == "normal")
 		{
-			if(replay == "")
+			Board.replay = "";
+			deserializeContents();
+			replay = contents;
+		}
+
+		// Build random level using new seed
+		else if(TransitionToScene.data == "random")
+		{
+			Board.replay = "";
+			randomizeMap(true);
+			serializeContents();
+		}
+		else 
+		{
+			// Build random level using Board.seed
+			if(Board.replay == "")
 			{
-				randomizeMap();
+				randomizeMap(false);
 				serializeContents();
-				replay = contents;
 			}
+
+			// Copy Board.replay to contents and deserialize
 			else
 			{
 				contents = replay;
 				deserializeContents();
 			}
 		}
-		else
-		{
-			if(contents == "") serializeContents();
-			else deserializeContents();
-			replay = "";
-		}
-		updateTiles();
+
+		TransitionToScene.data = "";
+		createHexes();
 	}
 
 	public void serializeContents()
@@ -57,8 +71,34 @@ public class Board : MonoBehaviour
 
 	public void deserializeContents()
 	{
-		Debug.Assert(contents.Length == terrain.width * terrain.height, 
-			"Expected contents length of " + (terrain.width * terrain.height) + " but found " + contents.Length);
+//		int expectedSize = (int) Mathf.Ceil(Mathf.Ceil(terrain.width * terrain.height * 3f / 8f) * 8f / 6f);
+//		Debug.Assert(contents.Length == expectedSize, "Expected contents length of " + expectedSize + " but found " + contents.Length);
+//
+//		int numCells = terrain.width * terrain.height;
+//		int[] unpacked = new int[numCells];
+//		byte[] rawBytes = System.Convert.FromBase64String(contents);
+//		BitArray rawBits = new BitArray(rawBytes.Length * 8);
+//		rawBytes.CopyTo(rawBits, 0);
+//		int bitIndex = 0;
+//		int unpackedIndex = 0;
+//		int val = 0;
+//		int shift = 0;
+//		while(bitIndex < rawBits.Length && contents.Length < numCells)
+//		{
+//			if(shift == 0)
+//				val = rawBits[0] ? 1 : 0;
+//			else val = val | ((rawBits[bitIndex] ? 1 : 0) << shift);
+//
+//			if(++shift >= 3)
+//			{
+//				unpacked[++unpackedIndex] = val;
+//				shift = 0;
+//			}
+//			
+//			bitIndex++;
+//		}
+//		terrain.EachPosition((x, y) => terrain[x, y] = int.Parse(unpacked[getContentsPosition(x, y)]));
+
 		terrain.EachPosition((x, y) => terrain[x, y] = int.Parse(contents[getContentsPosition(x, y)].ToString()));
 		updateVillageCount();
 	}
@@ -157,7 +197,7 @@ public class Board : MonoBehaviour
 		return x + y * cols;
 	}
 
-	public void updateTiles()
+	public void createHexes()
 	{
 		if(terrain == null) return;
 		
@@ -229,17 +269,17 @@ public class Board : MonoBehaviour
 		return "tile-" + x + "-" + y;
 	}
 
-	private void randomizeMap()
+	private void randomizeMap(bool generateSeed)
 	{
+		if(generateSeed) seed = (int) System.DateTime.Now.Ticks;
+		Random.InitState((int) seed);
+
 		int border = 1;
 
 		terrain.EachPosition((x, y) =>
 		{
 			int tile = 0;
-//			if(x >= border && y >= border && x < cols - border && y < rows - border)
-//			{
 			tile = Random.Range(0, 4);
-//			}
 			terrain[x, y] = tile;
 		});
 
@@ -249,11 +289,7 @@ public class Board : MonoBehaviour
 		{
 			count--;
 			int adjusted = count + Random.Range(-1, 2);
-			for(int i = 0; i < adjusted; i++)
-			{
-				villages.Add(terrainId);
-//				Debug.Log(count);
-			}
+			for(int i = 0; i < adjusted; i++) villages.Add(terrainId);
 		}
 
 		while(villages.Count > 0)

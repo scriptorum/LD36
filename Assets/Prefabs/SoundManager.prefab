@@ -18,8 +18,8 @@ GameObject:
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000011069821594}
-  - 114: {fileID: 114000013714988094}
+  - 4: {fileID: 4000013936187298}
+  - 114: {fileID: 114000013983862924}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -27,7 +27,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000011069821594
+--- !u!4 &4000013936187298
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114000013714988094
+--- !u!114 &114000013983862924
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -125,7 +125,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 77d2a048acd9f438d9391373da9dfbb0, type: 3}
     pitch: 1
     pitchVariation: 0
-    volume: 2
+    volume: 1
     volumeVariation: 0
     pan: 0
     panVariation: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 4f1184ed009e0416b9099b16737af3ff, type: 3}
     pitch: 1
     pitchVariation: 0
-    volume: 2
+    volume: 1
     volumeVariation: 0
     pan: 0
     panVariation: 0

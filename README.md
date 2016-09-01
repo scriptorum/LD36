@@ -58,4 +58,25 @@ It's loosely ordered by priority.
 - [X] Random level mode
 - [X] More informative help screen since you're out of time to do a tute
 
+## Post Compo
+
+### Extra levels
+Here are some decent solvable levels I've found. In the post-compo version copy this code, 
+open any level and then press P to paste it. Likewise you can get the current level's code by pressing C. 
+On standalone versions this works by interacting with the clipboard, but on WebGL (pthbth) 
+you are instead presented with a javascript dialog box. Anyhoot, this code is the random seed 
+used to generate the level. 
+
+R1833308256
+R1197157162
+R-1227625050
+R-1463715304
+R611065350
+R-717291648
+
+### Editor
+I've exposed the basic editor. Press E to toggle edit mode. Point to any hex and press a 
+number key, or hold down the key and drag to paint. 0-3 are terrain features, and 4-6 are
+the villages. Once edited you can copy the code with the C key, which is longer than a 
+random level key but "pastes" just the same. (C#####... instead of R####.)
 

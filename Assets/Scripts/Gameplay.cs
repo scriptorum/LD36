@@ -28,6 +28,24 @@ public class Gameplay : MonoBehaviour
 	public CoinEvent taxChanged;
 	public CoinEvent kingsVaultChanged;
 
+	#if UNITY_WEBGL && !UNITY_EDITOR
+	public string JSPrompt(string prompt, string defaultInput = "")
+	{
+		return Prompt(prompt, defaultInput);
+	}
+
+	public void JSAlert(string msg)
+	{
+		Alert(msg);
+	}
+
+	[System.Runtime.InteropServices.DllImport("__Internal")]
+	private static extern void Alert(string msg);
+
+	[System.Runtime.InteropServices.DllImport("__Internal")]
+	private static extern string Prompt(string prompt, string defaultInput);
+	#endif
+
 	void Awake()
 	{
 		board = GameObject.Find("Board").GetComponent<Board>();
@@ -47,10 +65,33 @@ public class Gameplay : MonoBehaviour
 		messageBar.setMessage("Network all the villages! [H] for help.");
 	}
 
+	void parseCode(string code)
+	{
+		if(code.StartsWith("R"))
+		{
+			Board.replay = "";
+			Board.seed = int.Parse(code.Remove(0, 1));
+			SceneManager.LoadScene("Play");
+		}
+		else if(code.StartsWith("C"))
+		{
+			Board.replay = code.Remove(0, 1);
+			SceneManager.LoadScene("Play");
+		}
+		else messageBar.setMessage("Failed to parse level code:" + code);
+	}
+
+	string makeCode()
+	{
+		return Board.replay == "" ? "R" + Board.seed : "C" + board.contents;
+	}
+
 	void Update()
 	{		
 		if(Input.GetKeyDown(KeyCode.R))
 		{
+			if(board.editMode)
+				Board.replay = board.contents;
 			SceneManager.LoadScene("Play");
 		}
 		else if(Input.GetKeyDown(KeyCode.Escape))
@@ -60,13 +101,31 @@ public class Gameplay : MonoBehaviour
 		}
 		else if(Input.GetKeyDown(KeyCode.C))
 		{
+			string code = makeCode();
+
+			#if UNITY_WEBGL && !UNITY_EDITOR
+			JSAlert("The level code is: " + code);
+			#else
+			GUIUtility.systemCopyBuffer = code;
 			messageBar.setMessage("Copied level to clipboard");
-			GUIUtility.systemCopyBuffer = board.contents;
+			#endif
 		}
 		else if(Input.GetKeyDown(KeyCode.P))
 		{
-			Board.replay = GUIUtility.systemCopyBuffer;
-			SceneManager.LoadScene("Play");
+			string code = "";
+
+			#if UNITY_WEBGL && !UNITY_EDITOR
+			code = JSPrompt("Enter a level code");
+			#else
+			code = GUIUtility.systemCopyBuffer;
+			#endif
+			parseCode(code);
+		}
+		else if(Input.GetKeyDown(KeyCode.E))
+		{
+			board.editMode = !board.editMode;
+			messageBar.setMessage("Edit mode " + (board.editMode ? "on" : "off"));
+			if(!board.editMode) Board.replay = board.contents;
 		}
 	}
 
@@ -84,7 +143,6 @@ public class Gameplay : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
 			nextTurn();
-			// TODO SFX
 			return;
 		}
 
