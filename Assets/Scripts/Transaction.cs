@@ -3,32 +3,26 @@
 [System.Serializable]
 public struct Transaction
 {
+	public TransactionType type;
 	public int amount;
-	public TransactionSource source;
-	public Transform custom;
+	public string sendAccount;
+	public string receiveAccount;
+	public Vector3 custom;
 
-	public Transaction(int amount, TransactionSource transType)
-	{
-		this.amount = amount;
-		this.source = transType;
-		this.custom = null;
-	}
 
-	public Transaction(int amount, Transform customSource)
+	public Transaction(TransactionType type, int amount, string sendAccount, string receiveAccount)
 	{
+		this.type = type;
 		this.amount = amount;
-		this.source = TransactionSource.Custom;
-		this.custom = customSource;
+		this.sendAccount = sendAccount;
+		this.receiveAccount = receiveAccount;
+		this.custom = Vector3.zero;
+		if(type != TransactionType.Update) Debug.Assert(amount > 0);
 	}
 }
 
-[System.Serializable]
-public enum TransactionSource
+public enum TransactionType
 {
-	None,
-	KingsVault,
-	Bank,
-	Income,
-	Tax,
-	Custom
+	Transfer, // move to main account from transfer account
+	Update // set main account balance
 }

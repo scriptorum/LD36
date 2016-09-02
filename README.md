@@ -67,16 +67,23 @@ On standalone versions this works by interacting with the clipboard, but on WebG
 you are instead presented with a javascript dialog box. Anyhoot, this code is the random seed 
 used to generate the level. 
 
-R1833308256
-R1197157162
-R-1227625050
-R-1463715304
-R611065350
-R-717291648
+- R1833308256
+- R1197157162
+- R-1227625050
+- R-1463715304
+- R611065350
+- R-717291648
+- R2147222718
+- R-344817546
 
 ### Editor
 I've exposed the basic editor. Press E to toggle edit mode. Point to any hex and press a 
 number key, or hold down the key and drag to paint. 0-3 are terrain features, and 4-6 are
 the villages. Once edited you can copy the code with the C key, which is longer than a 
-random level key but "pastes" just the same. (C#####... instead of R####.)
+random level key but "pastes" just the same. (C#####... instead of R####.) Here's another
+level I designed:
+
+-
+ C222001111001111212220501330001101222100130322010030220113351362330502011301131130011220110011331002222215000503333540302202013330301110020212110100122102220623435002121002200301100222220322222011112220200
+
 

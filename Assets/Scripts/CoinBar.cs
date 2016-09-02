@@ -6,105 +6,107 @@ using Spewnity;
 
 public class CoinBar : MonoBehaviour
 {
-	public Text bankText;
-	public Text incomeText;
-	public Text taxText;
-	public Vector3 kingsVaultLocation;
+	private static string CUSTOM = "custom";
+
+	public List<CoinBankAccount> accounts;
 	public GameObject coinPrefab;
 
-	private int curBank = 0;
-	private int curIncome = 0;
-	private int curTax = 0;
-//	private int kingsVault = 0;
-//	private float animDuration = 0.5f;
-//	private ActionQueue aq;
+	private float animDuration = 0.2f;
+	private ActionQueue aq;
 
 	void Awake()
 	{
-//		aq = gameObject.AddComponent<ActionQueue>();
+		aq = gameObject.AddComponent<ActionQueue>();
 	}
+
 
 	void Start()
 	{
+		foreach(CoinBankAccount acct in accounts) updateText(acct);
 	}
 
 	void Update()
 	{
 	}
 
-	public void onBankChanged(Transaction trans)
+	public CoinBankAccount getAccount(string accountName)
 	{
-		sendCoins(trans, bankText, ref curBank);
+		if(accountName == CUSTOM) return null;
+		CoinBankAccount acct = accounts.Find((a) => a.name == accountName);
+		if(acct == null) throw new UnityException("Cannot find " + accountName);
+		return acct;
 	}
 
-	public void onIncomeChanged(Transaction trans)
+	public void updateText(CoinBankAccount acct)
 	{
-		sendCoins(trans, incomeText, ref curIncome);
+		if(acct.text == null) return;
+		acct.text.text = acct.value.ToString();
 	}
 
-	public void onTaxChanged(Transaction trans)
+	public void onTransaction(Transaction trans)
 	{
-		sendCoins(trans, taxText, ref curTax);
+		switch(trans.type)
+		{
+			case TransactionType.Transfer:
+				transferCoins(trans);
+				break;
+
+			case TransactionType.Update:
+				CoinBankAccount account = getAccount(trans.receiveAccount);
+				account.value = trans.amount;
+				updateText(account);
+				break;
+		}
 	}
 
-	public void onKingsVaultChanged(Transaction trans)
+	private void transferCoins(Transaction trans)
 	{
-//		sendCoins(trans, null, ref kingsVault);
+		for(int i = 0; i < trans.amount; i++) transferCoin(trans);
+
+		if(!aq.running) aq.Run();	
 	}
 
-	private void sendCoins(Transaction trans, Text target, ref int account)
+	private void transferCoin(Transaction trans)
 	{
-		target.text = trans.amount.ToString();
-		// UGH! This is taking too much time to figure out. I have to scrap it.
-//		int coins = trans.amount - account;	
-//		Debug.Log("Coins:" + coins + " Amount:" + trans.amount + " type:" + trans.source + " target:" + (target == null ? "null" :  target.name));
-//		if(coins <= 0 || trans.source == TransactionSource.None)
-//		{
-//			if(target != null) target.text = trans.amount.ToString();
-//			account = trans.amount;
-//			return;
-//		}
-//
-//		Vector3 source = kingsVaultLocation;
-//		Vector3 dest = kingsVaultLocation;
-//		switch(trans.source)
-//		{
-//			case TransactionSource.Bank:
-//				source = bankText.transform.position;
-//				break;
-//
-//			case TransactionSource.Income:
-//				source = incomeText.transform.position;
-//				break;
-//
-//			case TransactionSource.Tax:
-//				source = taxText.transform.position;
-//				break;
-//
-//			case TransactionSource.None:
-//			case TransactionSource.KingsVault:
-//				break;
-//
-//			case TransactionSource.Custom:
-//				source = trans.custom.position;
-//				break;
-//		}			
-//
-//		// Animate coins
-//		for(int i = 0; i < trans.amount; i++)
-//		{
-//			aq.Instantiate(coinPrefab, source);
-//			aq.Add(() => aq.selectedGameObject.transform.LerpPosition(dest, animDuration));
-//			aq.Delay(animDuration);
-//			aq.Add(() => {
-//				int cur = int.Parse(target.text);
-//				cur++;
-//				target.text = cur.ToString();
-//			});
-//			aq.Destroy();
-//		}
-//
-//		if(!aq.running) aq.Run();
+		CoinBankAccount sendAcct = getAccount(trans.sendAccount);
+		CoinBankAccount receiveAcct = getAccount(trans.receiveAccount);
+		Vector3 sendVector = (trans.sendAccount == CUSTOM ? trans.custom : sendAcct.getVector());
+		Vector3 receiveVector = (trans.receiveAccount == CUSTOM ? trans.custom : receiveAcct.getVector());
+
+		// Only actually remove coin from transfer account if this is a transfer, otherwise just gain coin at main account
+		if(sendAcct != null) aq.Add(() =>
+			{
+				sendAcct.value -= 1;
+				updateText(sendAcct);
+			});
+		aq.Instantiate(coinPrefab, sendVector); // will select object
+		aq.Add(() =>
+		{
+			aq.Pause();
+			StartCoroutine(aq.selectedGameObject.transform.LerpPosition(receiveVector, animDuration, null, (tf) => aq.Resume()));
+		});
+//		aq.Log("Coin from " + sendAcct.name + " arrived at " + receiveAcct.name);
+		if(receiveAcct != null) aq.Add(() =>
+			{
+				receiveAcct.value += 1;
+				updateText(receiveAcct);
+			});
+		aq.Destroy();
 	}
 }
 
+[System.Serializable]
+public class CoinBankAccount
+{
+	public string name;
+	public Text text;
+	public Transform position;
+	public int value;
+
+	public Vector3 getVector()
+	{
+		if(position != null) return position.position;
+		else if(text != null) return text.transform.position;
+		else throw new UnityException("No vector available for account " + name);
+	}
+}

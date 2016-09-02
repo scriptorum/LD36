@@ -9,13 +9,14 @@ public class Gameplay : MonoBehaviour
 {
 	private static int STARTING_BANK = 5;
 	private static int TAX_RATE = 2;
+	private static string BANK = "bank";
+	private static string INCOME = "income";
+	private static string TAX = "tax";
+	private static string VAULT = "vault";
+	private static string CUSTOM = "custom";
 
 	private Board board;
-	private int _bank;
-	private int _income;
-	private int _tax;
-	private int _kingsVault;
-	private Transaction trans = new Transaction();
+	private Dictionary<string,int> accounts = new Dictionary<string, int>();
 
 	public int turn;
 	public bool gameOver = false;
@@ -23,10 +24,7 @@ public class Gameplay : MonoBehaviour
 	public int villagesConnected = 0;
 
 	public MessageBar messageBar;
-	public CoinEvent bankChanged;
-	public CoinEvent incomeChanged;
-	public CoinEvent taxChanged;
-	public CoinEvent kingsVaultChanged;
+	public CoinEvent onTransaction;
 
 	#if UNITY_WEBGL && !UNITY_EDITOR
 	public string JSPrompt(string prompt, string defaultInput = "")
@@ -48,6 +46,7 @@ public class Gameplay : MonoBehaviour
 
 	void Awake()
 	{
+		accounts[BANK] = accounts[INCOME] = accounts[TAX] = accounts[VAULT] = 0;
 		board = GameObject.Find("Board").GetComponent<Board>();
 		Tile.onMouseOver.AddListener(this.mouseOver);
 	}
@@ -57,10 +56,10 @@ public class Gameplay : MonoBehaviour
 		SoundManager.instance.Stop();
 		SoundManager.instance.Play("start");
 
-		bank = STARTING_BANK;
-		tax = 1;
-		income = 0;
-		kingsVault = 0;
+		setBalance(BANK, STARTING_BANK);
+		setBalance(TAX, 1);
+		setBalance(INCOME, 0);
+		setBalance(VAULT, 99999);
 		villagesConnected = 0;
 		messageBar.setMessage("Network all the villages! [H] for help.");
 	}
@@ -90,8 +89,7 @@ public class Gameplay : MonoBehaviour
 	{		
 		if(Input.GetKeyDown(KeyCode.R))
 		{
-			if(board.editMode)
-				Board.replay = board.contents;
+			if(board.editMode) Board.replay = board.contents;
 			SceneManager.LoadScene("Play");
 		}
 		else if(Input.GetKeyDown(KeyCode.Escape))
@@ -173,17 +171,15 @@ public class Gameplay : MonoBehaviour
 			
 			// Verify you can afford it
 			int cost = tile.type.roadCost;
-			if(bank < cost)
+			if(getBalance(BANK) < cost)
 			{
-				if(bank <= 0) fail("You're broke. Hit SPACE to advance to next year.");
+				if(getBalance(BANK) <= 0) fail("You're broke. Hit SPACE to advance to next year.");
 				else fail("It costs " + cost + " coins to build over " + tile.type.name);
 				return;
 			}
 
-			// Charge your account
-			bank -= cost;
-			trans.source = TransactionSource.Bank;
-			kingsVault += cost;
+			// Charge your account for the road
+			transferBalance(cost, BANK, CUSTOM, tile.transform.position);
 
 			// Adjacent villages now have roads and level up
 			int incomeGainedThisTurn = 0;
@@ -196,9 +192,7 @@ public class Gameplay : MonoBehaviour
 						villagesConnected++;
 						villagesConnectedThisTurn++;
 						incomeGainedThisTurn += t.type.income;
-						trans.source = TransactionSource.Custom;
-						trans.custom = t.gameObject.transform;
-						income += t.type.income;
+						transferBalance(t.type.income, CUSTOM, INCOME, t.transform.position);
 						t.showKaching();
 						SoundManager.instance.Play("village");
 						board.setGlow(t.x, t.y, true);
@@ -226,66 +220,14 @@ public class Gameplay : MonoBehaviour
 		}
 	}
 
-	public int bank
-	{
-		get { return  _bank; }
-		set
-		{ 
-			_bank = value;
-			trans.amount = value;
-			bankChanged.Invoke(trans);
-			trans.source = TransactionSource.None;
-		}
-	}
-
-	public int income
-	{
-		get { return  _income; }
-		set
-		{ 
-			_income = value;
-			trans.amount = value;
-			incomeChanged.Invoke(trans);
-			trans.source = TransactionSource.None;
-		}
-	}
-
-	public int tax
-	{
-		get { return  _tax; }
-		set
-		{ 
-			_tax = value;
-			trans.amount = value;
-			taxChanged.Invoke(trans);
-			trans.source = TransactionSource.None;
-		}	
-	}
-
-	public int kingsVault
-	{
-		get { return  _kingsVault; }
-		set
-		{ 
-			_kingsVault = value;
-			trans.amount = value;
-			kingsVaultChanged.Invoke(trans);
-			trans.source = TransactionSource.None;
-		}
-	}
-
 	public void nextTurn()
 	{
-		int net = income - tax;
+		int net = getBalance(INCOME) - getBalance(TAX);
 		turn++;
-		trans.source = TransactionSource.Income;
-		bank += income;
-		bank -= tax;
-		trans.source = TransactionSource.Bank;
-		kingsVault += tax;
-		trans.source = TransactionSource.KingsVault;
-		tax += TAX_RATE;
-		if(bank < 0)
+		if(net > 0) transferBalance(net, VAULT, BANK);
+		else if(net < 0) transferBalance(net, BANK, VAULT);
+		transferBalance(TAX_RATE, VAULT, TAX);
+		if(getBalance(BANK) < 0)
 		{
 			messageBar.setMessage("Taxed out of business. You connected " + villagesConnected +
 			(villagesConnected == 1 ? " village." : " villages."));
@@ -300,6 +242,46 @@ public class Gameplay : MonoBehaviour
 			SoundManager.instance.Stop();
 			SoundManager.instance.Play("year");
 		}
+	}
+
+	private void verifyAccount(string accountName)
+	{
+		if(accountName == CUSTOM) return;
+		if(!accounts.ContainsKey(accountName)) throw new UnityException("Account not found:" + accountName);
+	}
+
+	private void adjustAccount(string accountName, int amount)
+	{
+		verifyAccount(accountName);
+		if(accountName == CUSTOM) return;
+
+		accounts[accountName] += amount;
+	}
+
+	private int setBalance(string account, int value)
+	{
+		verifyAccount(account);
+		accounts[account] = value;
+		Transaction trans = new Transaction(TransactionType.Update, value, null, account);
+		onTransaction.Invoke(trans);
+		return value;
+	}
+
+	private int getBalance(string accountName)
+	{
+		verifyAccount(accountName);
+		return accounts[accountName];
+	}
+		
+
+	// Transfer account receives the funds
+	private void transferBalance(int amount, string sendAccount, string receiveAccount, Vector3 custom = new Vector3())
+	{
+		adjustAccount(sendAccount, -amount);
+		adjustAccount(receiveAccount, amount);
+		Transaction trans = new Transaction(TransactionType.Transfer, amount, sendAccount, receiveAccount);
+		trans.custom = custom;
+		onTransaction.Invoke(trans);
 	}
 }
 
