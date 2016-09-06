@@ -225,7 +225,7 @@ public class Gameplay : MonoBehaviour
 		int net = getBalance(INCOME) - getBalance(TAX);
 		turn++;
 		if(net > 0) transferBalance(net, VAULT, BANK);
-		else if(net < 0) transferBalance(net, BANK, VAULT);
+		else if(net < 0) transferBalance(-net, BANK, VAULT);
 		transferBalance(TAX_RATE, VAULT, TAX);
 		if(getBalance(BANK) < 0)
 		{

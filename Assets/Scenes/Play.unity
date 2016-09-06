@@ -1317,6 +1317,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 198000011152765788, guid: 5c2e75ea5c4b24152b2958820b0fc783,
+        type: 2}
+      propertyPath: SizeModule.curve.scalar
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5c2e75ea5c4b24152b2958820b0fc783, type: 2}
   m_IsPrefabParent: 0

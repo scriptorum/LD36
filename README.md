@@ -22,7 +22,6 @@ These are things I'd like to get in before the compo ends. Naturally, some won't
 It's loosely ordered by priority.
 - [ ] Levels
 - [ ] Add animation curve to message popup
-- [ ] Separate bank/income/tax for better coinbank anim?
 - [ ] Colorize text when income < tax
 - [ ] Put "R/ESC" tip on message after showing victory and hold it there
 - [ ] Tutorial
@@ -34,7 +33,8 @@ It's loosely ordered by priority.
 - [ ] Folks walking down roads
 - [ ] Better road art
 - [ ] SFX: different sounds for different sized villages or raising pitch for each subsequent
-- [ ] ~~FX: Animate coins in coinbank~~ [scrapped]
+- [ ] Separate bank/income/tax for better coinbank anim?
+- [X] FX: Animate coins in coinbank
 - [X] BUGFIX: Slight improvement to audio timing glitch when playing theme. #WebGLProblems
 - [X] BUGFIX: Theme volume levels were mixed incorrectly, sounds better now.
 - [X] BUGFIX: Less chance of game getting cropped or looking funny in full screen.
@@ -75,6 +75,7 @@ used to generate the level.
 - R-717291648
 - R2147222718
 - R-344817546
+- R457364488
 
 ### Editor
 I've exposed the basic editor. Press E to toggle edit mode. Point to any hex and press a 
